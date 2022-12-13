@@ -1,4 +1,3 @@
-import sys
 from cli_parser import CLIArgument, CLIFlag, CLIParser
 
 
@@ -14,7 +13,7 @@ def main():
             "a": CLIFlag(help_str="Flag a.")
         }
     )
-    parser.parse(sys.argv[1:])
+    parser.parse()
     print(parser)
 
 if __name__ == "__main__":
