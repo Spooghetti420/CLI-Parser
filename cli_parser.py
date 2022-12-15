@@ -48,7 +48,7 @@ class CLIParser(ABC):
         self._results = self._parse(tokens) # Represents the actual passed arguments by the user
         self._post_parsing_check()
 
-    def get(self, arg_name: str, default: Any) -> Any:
+    def get(self, arg_name: str, default: Optional[Any] = None) -> Any:
         """Simply allows user to type `parser["help"] instead of parser.get("help"), etc.`"""
         if arg_name in self._results:
             return self._results[arg_name]
