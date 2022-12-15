@@ -1,6 +1,6 @@
 from __future__ import annotations
 import sys
-from typing import Any
+from typing import Any, Optional
 from dataclasses import dataclass, field
 from abc import ABC
 from typing_extensions import Self
@@ -144,12 +144,15 @@ class CLIParser(ABC):
             if not argument.satisfied and not argument.optional:
                 print(f"parameter did not receive enough arguments: {name}")
 
-    def __repr__(self) -> str:
-        details = f"Command line parser:\n\tArguments:"
+    def print_help(self, title: Optional[str] = None) -> None:
+        if title is None:
+            title = "Command line parser"
+
+        details = f"{title}:\n\tArguments:"
 
         if self.arguments:
             for name, argument in self.arguments.items():
-                details += f"\n\t\t--{name} (nargs: {argument.nargs}"
+                details += f"\n\t\t{'--' if argument.switch else ''}{name} (nargs: {argument.nargs}"
                 if argument.switch:
                     details += ", switch"
                 details += f")\t{argument.help_str if argument.help_str else ''}\tResults: {self._get_result_if_present(name)}"
@@ -165,7 +168,7 @@ class CLIParser(ABC):
         else:
             details += "\n\t\t(None)"
 
-        return details
+        print(details)
 
     def _get_result_if_present(self, param_name: str) -> str:
         """Returns the value of the formal argument stored in the parser.
@@ -193,5 +196,5 @@ class CLIArgument:
 
 @dataclass
 class CLIFlag:
-    """A flag on the command-line is prefixed by one - (hyphen-minus character), e.g. `-o`."""
+    """A flag on the command-line is prefixed by one or two - (hyphen-minus characters), e.g. `-o`, `--help`."""
     help_str: str = field(default=None)
