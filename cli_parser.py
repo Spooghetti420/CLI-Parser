@@ -48,12 +48,12 @@ class CLIParser(ABC):
         self._results = self._parse(tokens) # Represents the actual passed arguments by the user
         self._post_parsing_check()
 
-    def get(self, arg_name: str) -> Any:
+    def get(self, arg_name: str, default: Any) -> Any:
         """Simply allows user to type `parser["help"] instead of parser.get("help"), etc.`"""
         if arg_name in self._results:
             return self._results[arg_name]
         else:
-            print(f"cli does not have parameter {arg_name}")
+            return default            
 
     def _parse(self, tokens: list[str]) -> dict:
         # Initialise results to default values
@@ -141,8 +141,8 @@ class CLIParser(ABC):
 
     def _post_parsing_check(self):
         for name, argument in self.arguments.items():
-            if not argument.satisfied:
-                print(f"argument did not receive enough arguments: {name}")
+            if not argument.satisfied and not argument.optional:
+                print(f"parameter did not receive enough arguments: {name}")
 
     def __repr__(self) -> str:
         details = f"Command line parser:\n\tArguments:"
@@ -183,6 +183,7 @@ class CLIArgument:
     nargs: int = 1
     switch: bool = field(default_factory=bool)  # If this is True, it must be used with a hyphen or two preceding its name, e.g. `program.py --number-of-args 2` instead of `program.py 2`. 
     current_args: int = field(default=0, init=False)  # Used for when arguments are being parsed; indicates the number of args this Argument type has consumed already.
+    optional: bool = field(default=False)
     help_str: str = field(default=None)
 
     @property
