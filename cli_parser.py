@@ -49,7 +49,7 @@ class CLIParser(ABC):
         self._post_parsing_check()
 
     def get(self, arg_name: str, default: Optional[Any] = None) -> Any:
-        """Simply allows user to type `parser["help"] instead of parser.get("help"), etc.`"""
+        """Retrieve a parsed argument from the parser, optionally supplying a value to return if none is found."""
         if arg_name in self._results:
             return self._results[arg_name]
         else:
