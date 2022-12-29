@@ -79,6 +79,7 @@ class CLIParser(ABC):
                         subsequent = next(token_stream)
                     except:
                         print(f"argument '{remainder}' ended abruptly")
+                        return results
 
                     self._cast_argument_and_set(subsequent, argument, results, remainder)
 
