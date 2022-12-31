@@ -142,8 +142,8 @@ class CLIParser(ABC):
 
     def _post_parsing_check(self):
         for name, argument in self.arguments.items():
-            if not argument.satisfied and not argument.optional:
-                pass
+            if not argument.satisfied:
+                self._results[name] = argument.default
 
     def print_help(self, title: Optional[str] = None) -> None:
         if title is None:
@@ -189,6 +189,7 @@ class CLIArgument:
     current_args: int = field(default=0, init=False)  # Used for when arguments are being parsed; indicates the number of args this Argument type has consumed already.
     optional: bool = field(default=False)
     help_str: str = field(default=None)
+    default: str = field(default=None)
 
     @property
     def satisfied(self) -> bool:
