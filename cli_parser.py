@@ -156,7 +156,7 @@ class CLIParser(ABC):
                 details += f"\n\t\t{'--' if argument.switch else ''}{name} (nargs: {argument.nargs}"
                 if argument.switch:
                     details += ", switch"
-                details += f")\t{argument.help_str if argument.help_str else ''}\tResults: {self._get_result_if_present(name)}"
+                details += f")\t{argument.help_str if argument.help_str else ''}"
         else:
             details += "\n\t\t(None)"
 
