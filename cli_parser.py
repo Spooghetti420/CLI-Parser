@@ -165,7 +165,7 @@ class CLIParser(ABC):
         if self.flags:
             for name, flag in self.flags.items():
                 prefixed_name = ("-" if len(name) == 1 else "--") + name
-                details += f"\n\t\t{prefixed_name}\t{flag.help_str}\tStatus: {self._get_result_if_present(name)}"
+                details += f"\n\t\t{prefixed_name}\t{flag.help_str}"
         else:
             details += "\n\t\t(None)"
 
